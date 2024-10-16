@@ -8,12 +8,12 @@ import { SlLogout } from "react-icons/sl"
 const Nav = () => {
   return (
     <div className="flex flex-col bg-slate-100 w-[250px] p-6 h-full">
-      <div className="flex gap-4 items-center h-1/6">
+      <div className="flex gap-4 items-center h-[100px]">
         <img src="/app/images/srawana.png" alt="logo" width={40}/>
         <Link to="/" className="text-blue-700 font-bold text-2xl">Srawana</Link>
       </div>
 
-      <div className="flex flex-col justify-between p-4 h-5/6">
+      <div className="flex flex-col justify-between p-4 h-full">
         <div className="flex flex-col gap-8">
             <div className="flex gap-4 text-blue-600 font-medium items-center">
                 <IoHomeOutline />
