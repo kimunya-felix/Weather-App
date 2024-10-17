@@ -23,10 +23,10 @@ export const meta: MetaFunction = () => {
 export default function Dashboard() {
   return (
     <div className="w-full flex">
-      <div className="flex flex-col bg-white w-3/5 h-full pt-7">
+      <div className="flex flex-col bg-white w-2/3 h-full pt-7">
         <div className="flex gap-4 p-5 justify-between">
             <div className="flex flex-col">
-                <span className="text-2xl font-bold">January 2022</span>
+                <span className="text-3xl font-bold">January 2022</span>
                 <span className="text-zinc-400">Thursday, Jan 4, 2022</span>
             </div>
             <div className="flex w-2/3 items-center justify-around">
@@ -37,8 +37,8 @@ export default function Dashboard() {
         </div>
         <div className="flex flex-col px-5 h-auto 2xl:h-1/2">
           <div className="flex w-full items-center justify-between">
-            <span className="font-bold text-lg">Today&apos;s Overview</span>
-                      <Link to="" className="text-sm flex items-center text-blue-500">
+            <span className="font-bold text-2xl">Today&apos;s Overview</span>
+                      <Link to="" className="text-lg flex items-center text-blue-500">
                         More detail <RiExternalLinkLine className="ml-1" />
                       </Link>
           </div>
@@ -97,15 +97,38 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-      <div className="flex bg-blue-950 w-2/5 h-full text-white p-5">
-        <div className="flex w-full justify-between">
-          <div className="flex flex-col">
-            <span className="text-lg">Mejasem Barat</span>
-            <p>Tegal Indonesia</p>
+      <div className="flex flex-col bg-[#132B4E] w-1/3 h-full text-white p-10">
+        <div className="flex flex-col w-full h-2/5 justify-between pb-10">
+          <div className="flex w-full justify-between items-center">
+            <div className="flex flex-col gap-3">
+              <span className="text-3xl">Mejasem Barat</span>
+              <p className="text-lg">Tegal Indonesia</p>
+            </div>
+            <span className="text-2xl">08:54 AM</span>
           </div>
-          <span>08:54 AM</span>
+          <div className="flex items-end justify-between pb-10 border-b-[1px] border-gray-400">
+            <div className="flex flex-col">
+              <img src="app/images/cloudy.png" alt="cloud" width={50}/>
+              <span className="text-7xl">20{'\u00B0'} C</span>
+            </div>
+            <span className="text-2xl text-right">Dramatic <br/> Cloudy</span>
+          </div>
         </div>
-        
+        <div className="flex flex-col h-3/5">
+          <div className="flex flex-col">
+            <span className="text-2xl">Chance of Rain</span>
+            <div className="flex flex-col gap-5">
+              <span className="flex text-2xl">7 PM<progress value={0.44} /> 44%</span>
+              <span className="flex text-2xl">8 PM<progress value={0.3} /> 30%</span>
+              <span className="flex text-2xl">9 PM<progress value={0.67} /> 67%</span>
+              <span className="flex text-2xl">10 PM<progress value={0.72} /> 72%</span>
+            </div>
+            
+            <progress value={0.3} />
+            <progress value={0.67} />
+            <progress value={0.72} />
+          </div>
+        </div>
       </div>
     </div>
   );
