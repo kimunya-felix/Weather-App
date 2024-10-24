@@ -119,10 +119,23 @@ export default function Dashboard() {
           <div className="flex flex-col">
             <span className="text-2xl">Chance of Rain</span>
             <div className="flex flex-col gap-5">
-              <span className="flex text-2xl">7 PM<progress value={0.44} className="bg-[#2A4261]"/> 44%</span>
-              <span className="flex text-2xl">8 PM<progress value={0.3} /> 30%</span>
-              <span className="flex text-2xl">9 PM<progress value={0.67} /> 67%</span>
-              <span className="flex text-2xl">10 PM
+                          <span className="flex text-2xl">7 PM
+                            <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                              <div className="bg-blue-600 h-2.5 rounded-full w-[44%]"></div>
+                            </div>
+                          44%</span>
+              
+                          <span className="flex text-2xl">8 PM
+                            <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                              <div className="bg-blue-600 h-2.5 rounded-full w-[30%]"></div>
+                            </div>
+                          30%</span>
+              
+                          <span className="flex text-2xl">9 PM
+                            <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                              <div className="bg-blue-600 h-2.5 rounded-full w-[67%]"></div>
+                            </div>
+                          67%</span>              <span className="flex text-2xl">10 PM
                 <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                   <div className="bg-blue-600 h-2.5 rounded-full w-[45%]" ></div>
                 </div>
