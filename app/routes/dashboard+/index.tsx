@@ -9,6 +9,7 @@ import { RiExternalLinkLine } from "react-icons/ri";
 import { WiDust, WiRainMix } from "react-icons/wi";
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { TbSunset2 } from "react-icons/tb";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -98,7 +99,7 @@ export default function Dashboard() {
         </div>
       </div>
       <div className="flex flex-col bg-[#132B4E] w-1/3 h-full text-white p-10">
-        <div className="flex flex-col w-full h-2/5 justify-between pb-10">
+        <div className="flex flex-col w-full h-1/3 justify-between pb-10">
           <div className="flex w-full justify-between items-center">
             <div className="flex flex-col gap-3">
               <span className="text-3xl">Mejasem Barat</span>
@@ -114,19 +115,45 @@ export default function Dashboard() {
             <span className="text-2xl text-right">Dramatic <br/> Cloudy</span>
           </div>
         </div>
-        <div className="flex flex-col h-3/5">
+        <div className="flex flex-col h-2/3 justify-around">
           <div className="flex flex-col">
             <span className="text-2xl">Chance of Rain</span>
             <div className="flex flex-col gap-5">
-              <span className="flex text-2xl">7 PM<progress value={0.44} /> 44%</span>
+              <span className="flex text-2xl">7 PM<progress value={0.44} className="bg-[#2A4261]"/> 44%</span>
               <span className="flex text-2xl">8 PM<progress value={0.3} /> 30%</span>
               <span className="flex text-2xl">9 PM<progress value={0.67} /> 67%</span>
-              <span className="flex text-2xl">10 PM<progress value={0.72} /> 72%</span>
+              <span className="flex text-2xl">10 PM
+                <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                  <div className="bg-blue-600 h-2.5 rounded-full w-[45%]" ></div>
+                </div>
+              72%</span>
             </div>
-            
-            <progress value={0.3} />
-            <progress value={0.67} />
-            <progress value={0.72} />
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="flex justify-between items-center">
+              <span className="text-2xl">Sunrise & Sunset</span>
+              <span className="text-sm">Tegal</span>
+            </div>
+            <div className="flex justify-between items-center border-[1px] border-gray-400 p-3 bg-[#2A487C] rounded-md">
+              <div className="flex">
+                <MdOutlineWbSunny  size={40} color="gray" />
+                <div className="flex flex-col">
+                  <span className="text-base">Sunrise</span>
+                  <span className="text-xl font-semibold">4:20 AM</span>
+                </div>
+              </div>
+              <span className="text-sm">4 hours ago</span>
+            </div>
+            <div className="flex justify-between items-center border-[1px] border-gray-400 p-3 bg-[#2A487C] rounded-md">
+              <div className="flex">
+              <TbSunset2 size={40} color="gray" />
+                <div className="flex flex-col">
+                  <span className="text-base">Sunset</span>
+                  <span className="text-xl font-semibold">5:50 PM</span>
+                </div>
+              </div>
+              <span className="text-sm">in 9 hours</span>
+            </div>
           </div>
         </div>
       </div>
