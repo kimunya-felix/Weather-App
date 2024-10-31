@@ -8,11 +8,9 @@ import { MdOutlineWbSunny } from "react-icons/md";
 import { RiExternalLinkLine, RiSearch2Line } from "react-icons/ri";
 import { WiRainMix } from "react-icons/wi";
 import { TbSunset2 } from "react-icons/tb";
-import * as am5 from "@amcharts/amcharts5";
-import * as am5xy from "@amcharts/amcharts5/xy";
-import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
-import { useLayoutEffect } from "react";
-
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { Line } from "react-chartjs-2";
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 export const meta: MetaFunction = () => {
   return [
     { title: "Dashboard" },
@@ -21,87 +19,53 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Dashboard() {
-  useLayoutEffect(() => {
-    // Create root element
-    const root = am5.Root.new("chartdiv");
+  const chartData = {
+    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+    datasets: [
+      {
+        label: 'Temperature (°C)',
+        data: [10, 12, 20, 25, 30],
+        borderColor: 'rgb(75, 192, 192)',
+        backgroundColor: function(context) {
+          const chart = context.chart;
+          const {ctx, chartArea} = chart;
+          if (!chartArea) return;
+        
+          const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+          gradient.addColorStop(0, 'rgba(75, 192, 192, 0)');
+          gradient.addColorStop(1, 'rgba(75, 192, 192, 0.3)');
+          return gradient;
+        },
+        fill: true,
+        tension: 0.4,
+        pointRadius: 4,
+        pointBackgroundColor: 'rgb(75, 192, 192)'
+      }
+    ]
+  };
 
-    // Set themes
-    root.setThemes([am5themes_Animated.new(root)]);
-
-    // Create chart
-    const chart = root.container.children.push(
-      am5xy.XYChart.new(root, {
-        panX: true,
-        panY: true,
-        wheelX: "panX",
-        wheelY: "zoomX"
-      })
-    );
-
-    // Add cursor
-    const cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
-      behavior: "none"
-    }));
-    cursor.lineY.set("visible", false);
-
-    // Generate data
-    const data = [{
-      date: new Date(2022, 0, 1).getTime(),
-      value: 100
-    }, {
-      date: new Date(2022, 0, 2).getTime(),
-      value: 120
-    }, {
-      date: new Date(2022, 0, 3).getTime(),
-      value: 130
-    }];
-
-    // Create axes
-    const xAxis = chart.xAxes.push(
-      am5xy.DateAxis.new(root, {
-        baseInterval: { timeUnit: "day", count: 1 },
-        renderer: am5xy.AxisRendererX.new(root, {}),
-      })
-    );
-
-    const yAxis = chart.yAxes.push(
-      am5xy.ValueAxis.new(root, {
-        renderer: am5xy.AxisRendererY.new(root, {})
-      })
-    );
-
-    // Add series
-    const series = chart.series.push(
-      am5xy.LineSeries.new(root, {
-        name: "Series",
-        xAxis: xAxis,
-        yAxis: yAxis,
-        valueYField: "value",
-        valueXField: "date",
-        tension: 0.3, // This creates the smooth curve
-        stroke: am5.color("#2F69FE"),
-        fill: am5.color("#2F69FE"),
-        tooltip: am5.Tooltip.new(root, {
-          labelText: "{valueY}"
-        })
-      })
-    );
-    series.fills.template.setAll({
-      fillOpacity: 0.2,
-      visible: true
-    });
-
-    series.data.setAll(data);
-
-    // Clean up on unmount
-    return () => {
-      root.dispose();
-    };
-  }, []);
-
-  return (
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false
+        }
+      },
+      y: {
+        grid: {
+          color: 'rgba(0, 0, 0, 0.05)'
+        }
+      }
+    }
+  };  return (
     <div className="w-full flex">
-      <div className="flex flex-col bg-white w-2/3 h-full pt-7 px-4">
+      <div className="flex flex-col bg-white w-2/3 h-full pt-7 px-4 justify-between pb-10">
         <div className="flex gap-4 p-5 justify-between">
             <div className="flex flex-col">
                 <span className="text-2xl font-bold">January 2022</span>
@@ -116,12 +80,12 @@ export default function Dashboard() {
                 <div className="p-4 rounded-sm bg-[#FBFBFB] shadow-sm"><FaRegUser size={20} color="#777"/></div>
             </div>
         </div>
-        <div className="flex flex-col px-5 h-auto 2xl:h-1/2">
+        <div className="flex flex-col px-5 h-auto 2xl:h-2/5">
           <div className="flex w-full items-center justify-between">
             <span className="font-medium text-xl">Today&apos;s overview</span>
-                      <Link to="" className="text-lg flex items-center text-blue-500">
-                        More detail <RiExternalLinkLine className="ml-1" />
-                      </Link>
+            <Link to="" className="text-base flex items-center text-blue-500">
+              More detail <RiExternalLinkLine className="ml-1" />
+            </Link>
           </div>
           <div className="grid grid-cols-2 gap-8 2xl:gap-4 h-full">
             <div className="flex items-center gap-5 bg-[#FBFBFB] shadow-sm rounded-md px-8">
@@ -168,13 +132,13 @@ export default function Dashboard() {
         </div>
         <div className="flex flex-col mx-5 h-auto 2xl:h-1/3 bg-[#FBFBFB] rounded-sm shadow-sm">
           <div className="flex w-full items-center justify-between">
-            <span className="font-bold text-lg">Average Weekly Temperature</span>
-                      <Link to="" className="text-sm flex items-center text-blue-500">
+            <span className="font-bold text-xl">Average Weekly Temperature</span>
+                      <Link to="" className="text-base flex items-center text-blue-500">
                         Tegal, Indonesia <IoIosArrowDown  className="ml-1" />
                       </Link>
           </div>
           <div className="w-full max-w-2xl h-full">
-            <div id="chartdiv" className="w-full h-full" ></div>
+            <Line data={chartData} options={chartOptions} />
           </div>
         </div>
       </div>
@@ -182,51 +146,51 @@ export default function Dashboard() {
         <div className="flex flex-col w-full h-1/3 justify-between pb-10">
           <div className="flex w-full justify-between items-center">
             <div className="flex flex-col gap-3">
-              <span className="text-3xl">Mejasem Barat</span>
+              <span className="text-2xl">Mejasem Barat</span>
               <p className="text-lg">Tegal Indonesia</p>
             </div>
             <span className="text-2xl">08:54 AM</span>
           </div>
           <div className="flex items-end justify-between pb-10 border-b-[1px] border-gray-400">
             <div className="flex flex-col">
-              <img src="app/images/cloudy.png" alt="cloud" width={50}/>
-              <span className="text-7xl">20{'\u00B0'} C</span>
+              <img src="app/images/cloudy.png" alt="cloud" width={40}/>
+              <span className="text-5xl">20{'\u00B0'} C</span>
             </div>
-            <span className="text-2xl text-right">Dramatic <br/> Cloudy</span>
+            <span className="text-xl text-right">Dramatic <br/> Cloudy</span>
           </div>
         </div>
         <div className="flex flex-col h-2/3 justify-around">
           <div className="flex flex-col">
-            <span className="text-2xl">Chance of Rain</span>
+            <span className="text-xl">Chance of Rain</span>
             <div className="flex flex-col gap-5">
-              <span className="flex text-lg">
+              <span className="flex text-lg w-full justify-between">
                 7 PM
-                <div className="w-2/3 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                  <div className="bg-blue-600 h-2.5 rounded-full w-[44%]"></div>
+                <div className="w-2/3 bg-[#294162] rounded-full h-6 dark:bg-gray-700">
+                  <div className="bg-[#8CB1FC] h-6 rounded-full w-[44%]"></div>
                 </div>
                 44%
               </span>
   
-              <span className="flex text-lg gap-3">
+              <span className="flex text-lg w-full justify-between">
                 8 PM
-                <div className="w-2/3 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                  <div className="bg-blue-600 h-2.5 rounded-full w-[30%]"></div>
+                <div className="w-2/3 bg-[#294162] rounded-full h-6 dark:bg-gray-700">
+                  <div className="bg-[#8CB1FC] h-6 rounded-full w-[30%]"></div>
                 </div>
                 30%
               </span>
   
-              <span className="flex text-lg">
+              <span className="flex text-lg w-full justify-between">
                 <span>9 PM</span>
-                <div className="w-2/3 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                  <div className="bg-blue-600 h-2.5 rounded-full w-[67%]"></div>
+                <div className="w-2/3 bg-[#294162] rounded-full h-6 dark:bg-gray-700">
+                  <div className="bg-[#8CB1FC] h-6 rounded-full w-[67%]"></div>
                 </div>
                 67%
               </span>
 
-              <span className="flex text-lg">
+              <span className="flex text-lg w-full justify-between">
                 10 PM
-                <div className="w-2/3 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                  <div className="bg-blue-600 h-2.5 rounded-full w-[45%]" ></div>
+                <div className="w-2/3 bg-[#294162] rounded-full h-6 dark:bg-gray-700">
+                  <div className="bg-[#8CB1FC] h-6 rounded-full w-[45%]" ></div>
                 </div>
                 72%
               </span>
@@ -234,8 +198,8 @@ export default function Dashboard() {
           </div>
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center">
-              <span className="text-2xl">Sunrise & Sunset</span>
-              <span className="text-sm">Tegal</span>
+              <span className="text-xl">Sunrise & Sunset</span>
+              <span className="flex text-sm items-center">Tegal <IoIosArrowDown  className="ml-1" /></span>
             </div>
             <div className="flex justify-between items-center border-[1px] border-gray-400 p-3 bg-[#2A487C] rounded-md">
               <div className="flex">
