@@ -67,7 +67,7 @@ export default function Dashboard() {
     <div className="w-full flex">
       <div className="flex flex-col bg-white w-2/3 h-full pt-7 px-4 justify-between pb-10">
         <div className="flex gap-4 p-5 justify-between">
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-2">
                 <span className="text-2xl font-bold">January 2022</span>
                 <span className="text-zinc-400">Thursday, Jan 4, 2022</span>
             </div>
@@ -82,7 +82,7 @@ export default function Dashboard() {
         </div>
         <div className="flex flex-col px-5 h-auto 2xl:h-2/5">
           <div className="flex w-full items-center justify-between">
-            <span className="font-medium text-xl">Today&apos;s overview</span>
+            <span className="font-semibold text-xl">Today&apos;s overview</span>
             <Link to="" className="text-base flex items-center text-blue-500">
               More detail <RiExternalLinkLine className="ml-1" />
             </Link>
@@ -132,7 +132,7 @@ export default function Dashboard() {
         </div>
         <div className="flex flex-col mx-5 h-auto 2xl:h-1/3 bg-[#FBFBFB] rounded-sm shadow-sm">
           <div className="flex w-full items-center justify-between">
-            <span className="font-bold text-xl">Average Weekly Temperature</span>
+            <span className="font-semibold text-xl">Average Weekly Temperature</span>
                       <Link to="" className="text-base flex items-center text-blue-500">
                         Tegal, Indonesia <IoIosArrowDown  className="ml-1" />
                       </Link>
@@ -160,7 +160,7 @@ export default function Dashboard() {
           </div>
         </div>
         <div className="flex flex-col h-2/3 justify-around">
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-5">
             <span className="text-xl">Chance of Rain</span>
             <div className="flex flex-col gap-5">
               <span className="flex text-lg w-full justify-between">
@@ -197,7 +197,7 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center mb-3">
               <span className="text-xl">Sunrise & Sunset</span>
               <span className="flex text-sm items-center">Tegal <IoIosArrowDown  className="ml-1" /></span>
             </div>
