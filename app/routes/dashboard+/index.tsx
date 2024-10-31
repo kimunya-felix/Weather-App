@@ -1,18 +1,17 @@
 // routes/dashboard.tsx
 import { MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
-import { FaCaretDown, FaCaretUp, FaRegBell, FaRegUser } from "react-icons/fa";
+import { FaCaretDown, FaCaretUp, FaRegBell, FaRegUser, FaWater } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import { LuWind } from "react-icons/lu";
 import { MdOutlineWbSunny } from "react-icons/md";
-import { RiExternalLinkLine } from "react-icons/ri";
-import { WiDust, WiRainMix } from "react-icons/wi";
-import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { RiExternalLinkLine, RiSearch2Line } from "react-icons/ri";
+import { WiRainMix } from "react-icons/wi";
 import { TbSunset2 } from "react-icons/tb";
-
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
-
+import * as am5 from "@amcharts/amcharts5";
+import * as am5xy from "@amcharts/amcharts5/xy";
+import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
+import { useLayoutEffect } from "react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -22,71 +21,152 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Dashboard() {
+  useLayoutEffect(() => {
+    // Create root element
+    const root = am5.Root.new("chartdiv");
+
+    // Set themes
+    root.setThemes([am5themes_Animated.new(root)]);
+
+    // Create chart
+    const chart = root.container.children.push(
+      am5xy.XYChart.new(root, {
+        panX: true,
+        panY: true,
+        wheelX: "panX",
+        wheelY: "zoomX"
+      })
+    );
+
+    // Add cursor
+    const cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
+      behavior: "none"
+    }));
+    cursor.lineY.set("visible", false);
+
+    // Generate data
+    const data = [{
+      date: new Date(2022, 0, 1).getTime(),
+      value: 100
+    }, {
+      date: new Date(2022, 0, 2).getTime(),
+      value: 120
+    }, {
+      date: new Date(2022, 0, 3).getTime(),
+      value: 130
+    }];
+
+    // Create axes
+    const xAxis = chart.xAxes.push(
+      am5xy.DateAxis.new(root, {
+        baseInterval: { timeUnit: "day", count: 1 },
+        renderer: am5xy.AxisRendererX.new(root, {}),
+      })
+    );
+
+    const yAxis = chart.yAxes.push(
+      am5xy.ValueAxis.new(root, {
+        renderer: am5xy.AxisRendererY.new(root, {})
+      })
+    );
+
+    // Add series
+    const series = chart.series.push(
+      am5xy.LineSeries.new(root, {
+        name: "Series",
+        xAxis: xAxis,
+        yAxis: yAxis,
+        valueYField: "value",
+        valueXField: "date",
+        tension: 0.3, // This creates the smooth curve
+        stroke: am5.color("#2F69FE"),
+        fill: am5.color("#2F69FE"),
+        tooltip: am5.Tooltip.new(root, {
+          labelText: "{valueY}"
+        })
+      })
+    );
+    series.fills.template.setAll({
+      fillOpacity: 0.2,
+      visible: true
+    });
+
+    series.data.setAll(data);
+
+    // Clean up on unmount
+    return () => {
+      root.dispose();
+    };
+  }, []);
+
   return (
     <div className="w-full flex">
-      <div className="flex flex-col bg-white w-2/3 h-full pt-7">
+      <div className="flex flex-col bg-white w-2/3 h-full pt-7 px-4">
         <div className="flex gap-4 p-5 justify-between">
             <div className="flex flex-col">
-                <span className="text-3xl font-bold">January 2022</span>
+                <span className="text-2xl font-bold">January 2022</span>
                 <span className="text-zinc-400">Thursday, Jan 4, 2022</span>
             </div>
             <div className="flex w-2/3 items-center justify-around">
-                <input type="text" placeholder="Search location here" className="border w-3/4 px-5 py-2 rounded-md"/>
-                <FaRegBell size={20} color="#777"/>
-                <FaRegUser size={20} color="#777"/>
+                <div className="relative w-3/4 rounded-md">
+                  <RiSearch2Line size={28} className="absolute left-3 top-3 text-zinc-400"/>
+                  <input type="text" placeholder="Search location here" className="bg-[#FBFBFB] shadow-sm rounded-sm pl-12 w-full py-3"/>
+                </div>
+                <div className="p-4 rounded-sm bg-[#FBFBFB] shadow-sm"><FaRegBell size={20} color="#777"/></div> 
+                <div className="p-4 rounded-sm bg-[#FBFBFB] shadow-sm"><FaRegUser size={20} color="#777"/></div>
             </div>
         </div>
         <div className="flex flex-col px-5 h-auto 2xl:h-1/2">
           <div className="flex w-full items-center justify-between">
-            <span className="font-bold text-2xl">Today&apos;s Overview</span>
+            <span className="font-medium text-xl">Today&apos;s overview</span>
                       <Link to="" className="text-lg flex items-center text-blue-500">
                         More detail <RiExternalLinkLine className="ml-1" />
                       </Link>
           </div>
-          <div className="grid grid-cols-2 p-8 gap-8 2xl:gap-0 h-full">
-            <div className="flex items-center gap-5">
-              <LuWind size={40} color="skyblue" />
+          <div className="grid grid-cols-2 gap-8 2xl:gap-4 h-full">
+            <div className="flex items-center gap-5 bg-[#FBFBFB] shadow-sm rounded-md px-8">
+              <LuWind size={35} color="#2F69FE" />
               <div className="flex flex-col gap-3 w-full">
                 <p className="text-zinc-500">Wind Speed</p>
                 <div className="flex items-center w-full gap-6">
-                  <span className="font-bold text-4xl">12km/h</span>
+                  <span className="font-normal text-4xl">12km/h</span>
                   <span className="flex text-normal text-zinc-500 gap-2 items-center"><FaCaretDown color="red"/> 2km/h</span>
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-5">
-              <WiRainMix size={40} color="skyblue" />
+            <div className="flex items-center gap-5 bg-[#FBFBFB] shadow-sm rounded-md px-8">
+              <WiRainMix size={40} color="#2F69FE" />
               <div className="flex flex-col gap-3 w-full">
                 <p className="text-zinc-500">Rain Chance</p>
                 <div className="flex items-center w-full gap-6">
-                  <span className="font-bold text-4xl">24%</span>
+                  <span className="font-normal text-4xl">24%</span>
                   <span className="flex text-normal text-zinc-500 gap-2 items-center"><FaCaretUp color="blue"/> 10%</span>
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-5">
-              <WiDust size={40} color="skyblue" />
+            <div className="flex items-center gap-5 bg-[#FBFBFB] shadow-sm rounded-md px-8">
+            <FaWater size={30} color="#2F69FE" />
               <div className="flex flex-col gap-3 w-full">
                 <p className="text-zinc-500">Pressure</p>
                 <div className="flex items-center w-full gap-6">
-                  <span className="font-bold text-4xl">720 hpa</span>
+                  <span className="font-normal text-4xl">720 hpa</span>
                   <span className="flex text-normal text-zinc-500 gap-2 items-center"><FaCaretUp color="blue"/> 32 hpa</span>
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-5">
-              <MdOutlineWbSunny  size={40} color="skyblue" />
+            <div className="flex items-center gap-5 bg-[#FBFBFB] shadow-sm rounded-md px-8">
+              <MdOutlineWbSunny  size={40} color="#2F69FE" />
               <div className="flex flex-col gap-3 w-full">
                 <p className="text-zinc-500">Uv Index</p>
                 <div className="flex items-center w-full gap-6">
-                  <span className="font-bold text-4xl">12km/h</span>
+                  <span className="font-normal text-4xl">2,3</span>
                   <span className="flex text-normal text-zinc-500 gap-2 items-center"><FaCaretDown color="red"/> 0,3</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="flex flex-col px-5 h-auto 2xl:h-1/3">
+        <div className="flex flex-col mx-5 h-auto 2xl:h-1/3 bg-[#FBFBFB] rounded-sm shadow-sm">
           <div className="flex w-full items-center justify-between">
             <span className="font-bold text-lg">Average Weekly Temperature</span>
                       <Link to="" className="text-sm flex items-center text-blue-500">
@@ -94,7 +174,7 @@ export default function Dashboard() {
                       </Link>
           </div>
           <div className="w-full max-w-2xl h-full">
-            <Line data={chartData} options={chartOptions} />
+            <div id="chartdiv" className="w-full h-full" ></div>
           </div>
         </div>
       </div>
@@ -119,27 +199,37 @@ export default function Dashboard() {
           <div className="flex flex-col">
             <span className="text-2xl">Chance of Rain</span>
             <div className="flex flex-col gap-5">
-                          <span className="flex text-2xl">7 PM
-                            <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                              <div className="bg-blue-600 h-2.5 rounded-full w-[44%]"></div>
-                            </div>
-                          44%</span>
-              
-                          <span className="flex text-2xl">8 PM
-                            <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                              <div className="bg-blue-600 h-2.5 rounded-full w-[30%]"></div>
-                            </div>
-                          30%</span>
-              
-                          <span className="flex text-2xl">9 PM
-                            <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                              <div className="bg-blue-600 h-2.5 rounded-full w-[67%]"></div>
-                            </div>
-                          67%</span>              <span className="flex text-2xl">10 PM
-                <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+              <span className="flex text-lg">
+                7 PM
+                <div className="w-2/3 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                  <div className="bg-blue-600 h-2.5 rounded-full w-[44%]"></div>
+                </div>
+                44%
+              </span>
+  
+              <span className="flex text-lg gap-3">
+                8 PM
+                <div className="w-2/3 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                  <div className="bg-blue-600 h-2.5 rounded-full w-[30%]"></div>
+                </div>
+                30%
+              </span>
+  
+              <span className="flex text-lg">
+                <span>9 PM</span>
+                <div className="w-2/3 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                  <div className="bg-blue-600 h-2.5 rounded-full w-[67%]"></div>
+                </div>
+                67%
+              </span>
+
+              <span className="flex text-lg">
+                10 PM
+                <div className="w-2/3 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                   <div className="bg-blue-600 h-2.5 rounded-full w-[45%]" ></div>
                 </div>
-              72%</span>
+                72%
+              </span>
             </div>
           </div>
           <div className="flex flex-col gap-2">
@@ -174,23 +264,4 @@ export default function Dashboard() {
   );
 }
 
-const chartData = {
-  labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-  datasets: [
-    {
-      label: 'Temperature (°C)',
-      data: [10, 12, 20, 25, 30],
-      borderColor: 'rgb(75, 192, 192)',
-      tension: 0.1
-    }
-  ]
-};
 
-const chartOptions = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-  },
-};

@@ -13,7 +13,8 @@ export default defineConfig({
       },
       routes: async (defineRoutes) => {
         return flatRoutes('routes', defineRoutes);
-      }
+      },
+      ssr: false,
     }),
     tsconfigPaths(),
   ],
