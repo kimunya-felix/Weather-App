@@ -8,9 +8,8 @@ import { MdOutlineWbSunny } from "react-icons/md";
 import { RiExternalLinkLine, RiSearch2Line } from "react-icons/ri";
 import { WiRainMix } from "react-icons/wi";
 import { TbSunset2 } from "react-icons/tb";
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
-import { Line } from "react-chartjs-2";
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+import { useEffect, useState } from "react";
+
 export const meta: MetaFunction = () => {
   return [
     { title: "Dashboard" },
@@ -19,51 +18,42 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Dashboard() {
-  const chartData = {
-    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-    datasets: [
-      {
-        label: 'Temperature (°C)',
-        data: [10, 12, 20, 25, 30],
-        borderColor: 'rgb(75, 192, 192)',
-        backgroundColor: function(context) {
-          const chart = context.chart;
-          const {ctx, chartArea} = chart;
-          if (!chartArea) return;
-        
-          const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-          gradient.addColorStop(0, 'rgba(75, 192, 192, 0)');
-          gradient.addColorStop(1, 'rgba(75, 192, 192, 0.3)');
-          return gradient;
-        },
-        fill: true,
-        tension: 0.4,
-        pointRadius: 4,
-        pointBackgroundColor: 'rgb(75, 192, 192)'
-      }
-    ]
-  };
+  const [ApexChart, setApexChart]: any = useState();
+  useEffect(() => {
+    import('react-apexcharts').then((module) => {
+      setApexChart(() => module.default);
+    });
+  }, []);
 
   const chartOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top' as const,
-      },
-    },
-    scales: {
-      x: {
-        grid: {
-          display: false
-        }
-      },
-      y: {
-        grid: {
-          color: 'rgba(0, 0, 0, 0.05)'
-        }
+    chart: {
+      type: 'area',
+      toolbar: {
+        show: false
       }
-    }
-  };  return (
+    },
+    stroke: {
+      curve: 'smooth'
+    },
+    xaxis: {
+      categories: ['Week 1', 'Week 2', 'Week 3', 'Week 4']
+    },
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shadeIntensity: 1,
+        opacityFrom: 0.7,
+        opacityTo: 0.3,
+      }
+    },
+    colors: ['#132B4E']
+  };
+  
+  const series = [{
+    name: 'Temperature (°C)',
+    data: [10, 12, 20, 25, 30]
+  }];
+  return (
     <div className="w-full flex">
       <div className="flex flex-col bg-white w-2/3 h-full pt-7 px-4 justify-between pb-10">
         <div className="flex gap-4 p-5 justify-between">
@@ -138,7 +128,14 @@ export default function Dashboard() {
                       </Link>
           </div>
           <div className="w-full max-w-2xl h-full">
-            <Line data={chartData} options={chartOptions} />
+          {ApexChart && (
+            <ApexChart
+              options={chartOptions}
+              series={series}
+              type="area"
+              height="100%"
+            />
+          )}
           </div>
         </div>
       </div>
@@ -227,5 +224,4 @@ export default function Dashboard() {
     </div>
   );
 }
-
 
