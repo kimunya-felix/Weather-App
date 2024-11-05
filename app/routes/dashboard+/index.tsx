@@ -99,7 +99,7 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="flex items-center gap-5 bg-[#FBFBFB] shadow-sm rounded-md px-8">
-            <FaWater size={30} color="#2F69FE" />
+              <FaWater size={30} color="#2F69FE" />
               <div className="flex flex-col gap-3 w-full">
                 <p className="text-zinc-500">Pressure</p>
                 <div className="flex items-center w-full gap-6">
@@ -150,7 +150,7 @@ export default function Dashboard() {
           </div>
           <div className="flex items-end justify-between pb-10 border-b-[1px] border-gray-400">
             <div className="flex flex-col">
-              <img src="app/images/cloudy.png" alt="cloud" width={40}/>
+              <img src="app/images/cloudy.webp" alt="cloud" width={40}/>
               <span className="text-5xl">20{'\u00B0'} C</span>
             </div>
             <span className="text-xl text-right">Dramatic <br/> Cloudy</span>

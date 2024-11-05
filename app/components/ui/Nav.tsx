@@ -11,7 +11,7 @@ const Nav = () => {
   return (
     <div className="flex flex-col bg-slate-100 w-[350px] p-6 h-full">
       <div className="flex gap-4 items-center h-[100px]">
-        <img src="/app/images/srawana.png" alt="logo" width={40}/>
+        <img src="/app/images/srawana.webp" alt="app logo" width={40}/>
         <Link to="/" className="font-poppins text-blue-700 font-bold text-2xl">Srawana</Link>
       </div>
 
