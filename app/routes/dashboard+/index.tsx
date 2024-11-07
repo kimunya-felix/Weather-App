@@ -53,42 +53,57 @@ export default function Dashboard() {
     name: 'Temperature (°C)',
     data: [10, 12, 20, 25, 30]
   }];
+
   return (
-    <div className="w-full flex">
+    <main className="w-full flex" role="main">
       <div className="flex flex-col bg-white w-2/3 h-full pt-7 px-4 justify-between pb-10">
-        <div className="flex gap-4 p-5 justify-between">
+        <header className="flex gap-4 p-5 justify-between" role="banner">
             <div className="flex flex-col gap-2">
-                <span className="text-2xl font-bold">January 2022</span>
-                <span className="text-zinc-400">Thursday, Jan 4, 2022</span>
+                <h1 className="text-2xl font-bold">January 2022</h1>
+                <time dateTime="2022-01-04" className="text-zinc-400">Thursday, Jan 4, 2022</time>
             </div>
             <div className="flex w-2/3 items-center justify-around">
                 <div className="relative w-3/4 rounded-md">
-                  <RiSearch2Line size={28} className="absolute left-3 top-3 text-zinc-400"/>
-                  <input type="text" placeholder="Search location here" className="bg-[#FBFBFB] shadow-sm rounded-sm pl-12 w-full py-3"/>
+                  <label htmlFor="location-search" className="sr-only">Search location</label>
+                  <RiSearch2Line size={28} className="absolute left-3 top-3 text-zinc-400" aria-hidden="true"/>
+                  <input 
+                    type="text" 
+                    id="location-search"
+                    placeholder="Search location here" 
+                    className="bg-[#FBFBFB] shadow-sm rounded-sm pl-12 w-full py-3"
+                  />
                 </div>
-                <div className="p-4 rounded-sm bg-[#FBFBFB] shadow-sm"><FaRegBell size={20} color="#777"/></div> 
-                <div className="p-4 rounded-sm bg-[#FBFBFB] shadow-sm"><FaRegUser size={20} color="#777"/></div>
+                <button className="p-4 rounded-sm bg-[#FBFBFB] shadow-sm" aria-label="Notifications">
+                  <FaRegBell size={20} color="#777" aria-hidden="true"/>
+                </button>
+                <button className="p-4 rounded-sm bg-[#FBFBFB] shadow-sm" aria-label="User profile">
+                  <FaRegUser size={20} color="#777" aria-hidden="true"/>
+                </button>
             </div>
-        </div>
-        <div className="flex flex-col px-5 h-auto 2xl:h-2/5">
+        </header>
+
+        <section className="flex flex-col px-5 h-auto 2xl:h-2/5" aria-labelledby="overview-title">
           <div className="flex w-full items-center justify-between">
-            <span className="font-semibold text-xl">Today&apos;s overview</span>
-            <Link to="" className="text-base flex items-center text-blue-500">
-              More detail <RiExternalLinkLine className="ml-1" />
+            <h2 id="overview-title" className="font-semibold text-xl">Today&apos;s overview</h2>
+            <Link to="" className="text-base flex items-center text-blue-500" aria-label="View more details">
+              More detail <RiExternalLinkLine className="ml-1" aria-hidden="true"/>
             </Link>
           </div>
           <div className="grid grid-cols-2 gap-8 2xl:gap-4 h-full">
-            <div className="flex items-center gap-5 bg-[#FBFBFB] shadow-sm rounded-md px-8">
-              <LuWind size={35} color="#2F69FE" />
+            <div className="flex items-center gap-5 bg-[#FBFBFB] shadow-sm rounded-md px-8" aria-label="Wind speed statistics">
+              <LuWind size={35} color="#2F69FE" aria-hidden="true"/>
               <div className="flex flex-col gap-3 w-full">
-                <p className="text-zinc-500">Wind Speed</p>
+                <h3 className="text-zinc-500">Wind Speed</h3>
                 <div className="flex items-center w-full gap-6">
                   <span className="font-normal text-4xl">12km/h</span>
-                  <span className="flex text-normal text-zinc-500 gap-2 items-center"><FaCaretDown color="red"/> 2km/h</span>
+                  <span className="flex text-normal text-zinc-500 gap-2 items-center">
+                    <FaCaretDown color="red" aria-hidden="true"/> 
+                    <span aria-label="Decreased by 2 kilometers per hour">2km/h</span>
+                  </span>
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-5 bg-[#FBFBFB] shadow-sm rounded-md px-8">
+            <div className="flex items-center gap-5 bg-[#FBFBFB] shadow-sm rounded-md px-8" aria-label="Rain probability statistics">
               <WiRainMix size={40} color="#2F69FE" />
               <div className="flex flex-col gap-3 w-full">
                 <p className="text-zinc-500">Rain Chance</p>
@@ -98,7 +113,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-5 bg-[#FBFBFB] shadow-sm rounded-md px-8">
+            <div className="flex items-center gap-5 bg-[#FBFBFB] shadow-sm rounded-md px-8" aria-label="Atmospheric pressure statistics">
               <FaWater size={30} color="#2F69FE" />
               <div className="flex flex-col gap-3 w-full">
                 <p className="text-zinc-500">Pressure</p>
@@ -108,7 +123,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-5 bg-[#FBFBFB] shadow-sm rounded-md px-8">
+            <div className="flex items-center gap-5 bg-[#FBFBFB] shadow-sm rounded-md px-8" aria-label="UV Radiation statistics">
               <MdOutlineWbSunny  size={40} color="#2F69FE" />
               <div className="flex flex-col gap-3 w-full">
                 <p className="text-zinc-500">Uv Index</p>
@@ -119,109 +134,100 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-        </div>
-        <div className="flex flex-col mx-5 h-auto 2xl:h-1/3 bg-[#FBFBFB] rounded-sm shadow-sm">
+        </section>
+
+        <section className="flex flex-col mx-5 h-auto 2xl:h-1/3 bg-[#FBFBFB] rounded-sm shadow-sm" aria-labelledby="temperature-chart">
           <div className="flex w-full items-center justify-between">
-            <span className="font-semibold text-xl">Average Weekly Temperature</span>
-                      <Link to="" className="text-base flex items-center text-blue-500">
-                        Tegal, Indonesia <IoIosArrowDown  className="ml-1" />
-                      </Link>
+            <h2 id="temperature-chart" className="font-semibold text-xl">Average Weekly Temperature</h2>
+            <button className="text-base flex items-center text-blue-500" aria-label="Select location">
+              Tegal, Indonesia <IoIosArrowDown className="ml-1" aria-hidden="true"/>
+            </button>
           </div>
-          <div className="w-full max-w-2xl h-full">
-          {ApexChart && (
-            <ApexChart
-              options={chartOptions}
-              series={series}
-              type="area"
-              height="100%"
-            />
-          )}
+          <div className="w-full max-w-2xl h-full" role="img" aria-label="Temperature trend chart">
+            {ApexChart && (
+              <ApexChart
+                options={chartOptions}
+                series={series}
+                type="area"
+                height="100%"
+              />
+            )}
           </div>
-        </div>
+        </section>
       </div>
-      <div className="flex flex-col bg-[#132B4E] w-1/3 h-full text-white p-10">
-        <div className="flex flex-col w-full h-1/3 justify-between pb-10">
+
+      <aside className="flex flex-col bg-[#132B4E] w-1/3 h-full text-white p-10" aria-label="Weather details">
+        <section className="flex flex-col w-full h-1/3 justify-between pb-10" aria-labelledby="location-header">
           <div className="flex w-full justify-between items-center">
             <div className="flex flex-col gap-3">
-              <span className="text-2xl">Mejasem Barat</span>
+              <h2 id="location-header" className="text-2xl">Mejasem Barat</h2>
               <p className="text-lg">Tegal Indonesia</p>
             </div>
-            <span className="text-2xl">08:54 AM</span>
+            <time dateTime="08:54" className="text-2xl">08:54 AM</time>
           </div>
           <div className="flex items-end justify-between pb-10 border-b-[1px] border-gray-400">
             <div className="flex flex-col">
-              <img src="app/images/cloudy.webp" alt="cloud" width={40}/>
-              <span className="text-5xl">20{'\u00B0'} C</span>
+              <img src="app/images/cloudy.webp" alt="Cloudy weather" width={40}/>
+              <span className="text-5xl" aria-label="20 degrees celsius">20{'\u00B0'} C</span>
             </div>
             <span className="text-xl text-right">Dramatic <br/> Cloudy</span>
           </div>
-        </div>
-        <div className="flex flex-col h-2/3 justify-around">
-          <div className="flex flex-col gap-5">
-            <span className="text-xl">Chance of Rain</span>
-            <div className="flex flex-col gap-5">
-              <span className="flex text-lg w-full justify-between">
-                7 PM
-                <div className="w-2/3 bg-[#294162] rounded-full h-6 dark:bg-gray-700">
-                  <div className="bg-[#8CB1FC] h-6 rounded-full w-[44%]"></div>
-                </div>
-                44%
-              </span>
-  
-              <span className="flex text-lg w-full justify-between">
-                8 PM
-                <div className="w-2/3 bg-[#294162] rounded-full h-6 dark:bg-gray-700">
-                  <div className="bg-[#8CB1FC] h-6 rounded-full w-[30%]"></div>
-                </div>
-                30%
-              </span>
-  
-              <span className="flex text-lg w-full justify-between">
-                <span>9 PM</span>
-                <div className="w-2/3 bg-[#294162] rounded-full h-6 dark:bg-gray-700">
-                  <div className="bg-[#8CB1FC] h-6 rounded-full w-[67%]"></div>
-                </div>
-                67%
-              </span>
+        </section>
 
-              <span className="flex text-lg w-full justify-between">
-                10 PM
-                <div className="w-2/3 bg-[#294162] rounded-full h-6 dark:bg-gray-700">
-                  <div className="bg-[#8CB1FC] h-6 rounded-full w-[45%]" ></div>
+        <section className="flex flex-col h-2/3 justify-around">
+          <div className="flex flex-col gap-5" aria-labelledby="rain-chance">
+            <h2 id="rain-chance" className="text-xl">Chance of Rain</h2>
+            <div className="flex flex-col gap-5">
+              {[
+                { time: "7 PM", percentage: 44 },
+                { time: "8 PM", percentage: 30 },
+                { time: "9 PM", percentage: 67 },
+                { time: "10 PM", percentage: 72 }
+              ].map((item) => (
+                <div key={item.time} className="flex text-lg w-full justify-between" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow={item.percentage} aria-label={`Rain chance at ${item.time}`}>
+                  {item.time}
+                  <div className="w-2/3 bg-[#294162] rounded-full h-6">
+                    <div 
+                      className="bg-[#8CB1FC] h-6 rounded-full" 
+                      style={{ width: `${item.percentage}%` }}
+                    />
+                  </div>
+                  {item.percentage}%
                 </div>
-                72%
-              </span>
+              ))}
             </div>
           </div>
-          <div className="flex flex-col gap-2">
+
+          <div className="flex flex-col gap-2" aria-labelledby="sun-schedule">
             <div className="flex justify-between items-center mb-3">
-              <span className="text-xl">Sunrise & Sunset</span>
-              <span className="flex text-sm items-center">Tegal <IoIosArrowDown  className="ml-1" /></span>
+              <h2 id="sun-schedule" className="text-xl">Sunrise & Sunset</h2>
+              <button className="flex text-sm items-center" aria-label="Select location">
+                Tegal <IoIosArrowDown className="ml-1" aria-hidden="true"/>
+              </button>
             </div>
             <div className="flex justify-between items-center border-[1px] border-gray-400 p-3 bg-[#2A487C] rounded-md">
               <div className="flex">
-                <MdOutlineWbSunny  size={40} color="gray" />
+                <MdOutlineWbSunny size={40} color="gray" aria-hidden="true"/>
                 <div className="flex flex-col">
                   <span className="text-base">Sunrise</span>
-                  <span className="text-xl font-semibold">4:20 AM</span>
+                  <time dateTime="04:20" className="text-xl font-semibold">4:20 AM</time>
                 </div>
               </div>
               <span className="text-sm">4 hours ago</span>
             </div>
             <div className="flex justify-between items-center border-[1px] border-gray-400 p-3 bg-[#2A487C] rounded-md">
               <div className="flex">
-              <TbSunset2 size={40} color="gray" />
+                <TbSunset2 size={40} color="gray" aria-hidden="true"/>
                 <div className="flex flex-col">
                   <span className="text-base">Sunset</span>
-                  <span className="text-xl font-semibold">5:50 PM</span>
+                  <time dateTime="17:50" className="text-xl font-semibold">5:50 PM</time>
                 </div>
               </div>
               <span className="text-sm">in 9 hours</span>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </section>
+      </aside>
+    </main>
   );
 }
-
